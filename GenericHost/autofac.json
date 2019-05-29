@@ -1,0 +1,33 @@
+{
+  "defaultAssembly": "Infrastructure",
+  "modules": [
+    {
+      "type": "Infrastructure.Modules.ApplicationModule",
+      "properties": {
+      }
+    },
+    {
+      "type": "Infrastructure.Common.Module",
+      "properties": {
+      }
+    },
+    {
+      "type": "Infrastructure.EntityFrameworkDataAccess.Module",
+      "properties": {
+        "ConnectionString": "Server=localhost;Database=HexagonFrameworkDB;User Id=sa;Password=sa;"
+      }
+    },
+    {
+      "type": "Infrastructure.RedisCacheAccess.Module",
+      "properties": {
+        "ConnectionString": "192.168.0.181:6379"
+      }
+    },
+    {
+      "type": "Infrastructure.CapEventBusAccess.Module",
+      "properties": {
+        "RabbitMqConnection": "192.168.0.181"
+      }
+    }
+  ]
+}

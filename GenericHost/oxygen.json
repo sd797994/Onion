@@ -1,0 +1,8 @@
+{
+  "Oxygen": {
+    "MappingPort": 80,
+    "ServerPort": 80,
+    "ConsulServerName": "UserService",
+    "Consul": "127.0.0.1:8500"
+  }
+}
