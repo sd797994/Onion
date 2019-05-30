@@ -14,10 +14,11 @@ namespace Infrastructure.Common
     public class Common : ICommon
     {
         private readonly IEncryptHelper _encryptHelper;
-
-        public Common(IEncryptHelper encryptHelper)
+        private readonly ISnowFlakeHelper _snowFlakeHelper;
+        public Common(IEncryptHelper encryptHelper, ISnowFlakeHelper snowFlakeHelper)
         {
             _encryptHelper = encryptHelper;
+            _snowFlakeHelper = snowFlakeHelper;
         }
 
         /// <summary>
@@ -61,6 +62,15 @@ namespace Infrastructure.Common
                 .Build();
            return configuration
                 .GetValue<string>(key);
+        }
+
+        /// <summary>
+        /// 生成全局id
+        /// </summary>
+        /// <returns></returns>
+        public long CreateGlobalId()
+        {
+            return Math.Abs(_snowFlakeHelper.GetId());
         }
 
         /// <summary>

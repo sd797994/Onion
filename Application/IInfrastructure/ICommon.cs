@@ -36,5 +36,11 @@ namespace Application.IInfrastructure
         /// <param name="key"></param>
         /// <returns></returns>
         string GetConfigurationSetting(string basepath, string filename, string key);
+
+        /// <summary>
+        /// 生成全局id
+        /// </summary>
+        /// <returns></returns>
+        long CreateGlobalId();
     }
 }

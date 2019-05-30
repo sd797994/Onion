@@ -32,13 +32,10 @@ namespace Application.UseCase.Register
             {
                 using (var begintran = _beginTransaction.BeginTransaction(_eventBus))
                 {
-                    //校验用户名重复
-                    if (await _userRepository.AnyAsync(new UserExistByNameSpceifications(input.UserName)))
-                    {
-                        throw new ApplicationException("注册用户名重复,请重试!");
-                    }
                     //实例化用户领域实体
-                    var user = new User();
+                    var user = new User {Id = _common.CreateGlobalId()};
+                    //校验用户名重复
+                    user.CheckLegitimacy(await _userRepository.AnyAsync(new UserExistByNameSpceifications(input.UserName)));
                     //判断并注册用户
                     user.Register(input.UserName, input.Password, input.NickName);
                     //设置加密密码

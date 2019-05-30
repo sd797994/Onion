@@ -10,6 +10,6 @@ namespace Domain
     /// <typeparam name="T"></typeparam>
     internal interface IEntity
     {
-        Guid Id { get; }
+        long Id { get; }
     }
 }

@@ -9,7 +9,7 @@ namespace Domain.User
         /// <summary>
         /// 用户编号
         /// </summary>
-        public Guid Id { get; set; }
+        public long Id { get; set; }
         /// <summary>
         /// 登录名
         /// </summary>
@@ -30,6 +30,19 @@ namespace Domain.User
         /// 用户状态
         /// </summary>
         public UserStateEnum State { get; set; }
+
+        /// <summary>
+        /// 检测用户名有效性
+        /// </summary>
+        /// <param name="existsByRepo"></param>
+        /// <returns></returns>
+        public void CheckLegitimacy(bool existsByRepo)
+        {
+            if (!existsByRepo)
+            {
+                throw new DomainException("注册用户名重复!");
+            }
+        }
         /// <summary>
         /// 用户注册
         /// </summary>
@@ -38,7 +51,6 @@ namespace Domain.User
         /// <param name="nickname"></param>
         public void Register(string username, string password, string nickname)
         {
-            Id = Guid.NewGuid();
             if (string.IsNullOrEmpty(username) || username.Length > 11 || username.Length < 5)
             {
                 throw new DomainException("请输入用户名并确保长度为6-10!");

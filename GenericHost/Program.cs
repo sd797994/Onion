@@ -10,7 +10,7 @@ using System.IO;
 using System.Threading.Tasks;
 using Oxygen;
 
-namespace GeneralHost
+namespace GenericHost
 {
     class Program
     {
@@ -36,7 +36,7 @@ namespace GeneralHost
             })
             .ConfigureServices(services =>
             {
-                services.AddOxygenServer(_configuration);
+                //services.AddOxygenServer(_configuration);
                 services.AddLogging(configure =>
                 {
                     configure.AddConfiguration(_configuration.GetSection("Logging"));

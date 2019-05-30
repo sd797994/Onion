@@ -10,7 +10,7 @@ namespace Infrastructure.PersistentObjects
         /// <summary>
         /// 用户编号
         /// </summary>
-        public Guid Id { get; set; }
+        public long Id { get; set; }
         /// <summary>
         /// 登录名
         /// </summary>
