@@ -121,5 +121,21 @@ namespace Domain.User
                 throw new DomainException("只有账户状态正常的用户才可变更金额!");
             }
         }
+
+        /// <summary>
+        /// 检测用户登录有效性
+        /// </summary>
+        /// <param name="newPassword"></param>
+        public void CheckLoginState(string newPassword)
+        {
+            if (Password.Equals(newPassword))
+            {
+                throw new DomainException("账号或密码错误,请重试!");
+            }
+            if (State == UserStateEnum.Cancellation)
+            {
+                throw new DomainException("用户已注销,无法登录!");
+            }
+        }
     }
 }

@@ -13,7 +13,7 @@ namespace Application.EventSubscriber.RegisterSubscriber
 
         public UserRegisterSubscriber()
         {
-            TopicName = "Microservice.User.RegisterHandle";
+            TopicName = "Onion.User.RegisterHandle";
         }
         public async Task Execute(UserRegisterEvent input)
         {

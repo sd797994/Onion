@@ -30,12 +30,13 @@ namespace Application.UseCase.Register
         {
             return await DoAsync(async (x) =>
             {
-                using (var begintran = _beginTransaction.BeginTransaction(_eventBus))
+                using (var beginTran = _beginTransaction.BeginTransaction(_eventBus))
                 {
                     //实例化用户领域实体
                     var user = new User {Id = _common.CreateGlobalId()};
                     //校验用户名重复
-                    user.CheckLegitimacy(await _userRepository.AnyAsync(new UserExistByNameSpceifications(input.UserName)));
+                    user.CheckLegitimacy(
+                        await _userRepository.AnyAsync(new UserExistByNameSpceifications(input.UserName)));
                     //判断并注册用户
                     user.Register(input.UserName, input.Password, input.NickName);
                     //设置加密密码
@@ -43,10 +44,10 @@ namespace Application.UseCase.Register
                     //持久化
                     _userRepository.Add(user);
                     await _userRepository.SaveAsync();
-                    x.Message = "用户注册成功!";
-                    await _eventBus.PublishAsync("Microservice.User.RegisterHandle", new UserRegisterEvent(user.NickName));
-                    //throw new ApplicationException("测试事务异常!");
-                    begintran.Commit(_eventBus);
+                    await _eventBus.PublishAsync("Onion.User.RegisterHandle",
+                        new UserRegisterEvent(user.NickName));
+                    beginTran.Commit(_eventBus);
+                    x.SetResult(0, "用户注册成功!");
                 }
             });
         }

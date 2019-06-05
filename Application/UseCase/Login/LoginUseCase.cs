@@ -30,21 +30,20 @@ namespace Application.UseCase.Login
             {
                 //校验用户名重复
                 var loginInfo = await _userRepository.GetAsync(new UserExistByNameSpceifications(input.UserName));
-                if (loginInfo == null || !loginInfo.Password.Equals(_common.ShaEncrypt(loginInfo.Id.ToString(), input.Password)))
+                if (loginInfo == null)
                 {
                     throw new ApplicationException("账号或密码错误,请重试!");
                 }
-                if (loginInfo.State == UserStateEnum.Cancellation)
-                {
-                    throw new ApplicationException("用户已注销,无法登录!");
-                }
+                //检测用户有效性
+                loginInfo.CheckLoginState(_common.ShaEncrypt(loginInfo.Id.ToString(), input.Password));
+                //生成jwt
                 x.Data = _common.GetJwtToken(new{
                     Id= loginInfo.Id.ToString(),
                     loginInfo.UserName,
                     loginInfo.NickName
                 });
-                _cacheServer.SetCache("HexagonFramework.UserLoginInfo." + loginInfo.Id, x.Data, TimeSpan.FromDays(30));
-                await _eventBus.PublishAsync("Microservice.User.LoginHandle", new UserLoginEvent(loginInfo.NickName, DateTime.Now));
+                _cacheServer.SetCache("Onion.UserLoginInfo." + loginInfo.Id, x.Data, TimeSpan.FromDays(30));
+                await _eventBus.PublishAsync("Onion.User.LoginHandle", new UserLoginEvent(loginInfo.NickName, DateTime.Now));
             });
         }
     }
